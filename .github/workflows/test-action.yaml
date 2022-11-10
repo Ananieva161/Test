@@ -9,8 +9,9 @@ jobs:
       - run: git submodule update
       - run: pip install --user cpp-coveralls
       - run: sudo apt-get update -y && sudo apt-get install -y qt5-qmake qt5-default
-      - run: ./Tests
+      - run: ./Tests/ExtensionsSpecification
  
+
       - name: Coveralls
         run: coveralls -t ${{ secrets.coveralls_token }} --root . -E ".*external.*" -E ".*tests.*"
 
