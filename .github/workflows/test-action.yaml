@@ -9,9 +9,14 @@ jobs:
       - run: git submodule update
       - run: pip install --user cpp-coveralls
       - run: sudo apt-get update -y && sudo apt-get install -y qt5-qmake qt5-default
-      - run: ./Tests/ExtensionsSpecification
- 
-
+      - run: ./Tests/ExtensionsSpecification.cs
+      - run: ./Tests/FieldAddingShipsSpecification.cs
+      - run: ./Tests/FieldExtensions.cs
+      - run: ./Tests/GameSpecification.cs
+      - run: ./Tests/ShipSpecification.cs
+      - run: ./Tests/FieldPuttingShipsSpecification.cs
+      - run: ./Tests/FieldShootingSpecification.cs
+      
       - name: Coveralls
         run: coveralls -t ${{ secrets.coveralls_token }} --root . -E ".*external.*" -E ".*tests.*"
 
