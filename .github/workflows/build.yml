@@ -2,7 +2,7 @@ name: Build
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
@@ -11,16 +11,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-
-    - name: Setup .NET Core SDK 3.1.x
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '3.1.x'
-
-    - name: Setup .NET Core SDK 5.0.x
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '5.0.x'
 
     - name: Setup .NET Core SDK 6.0.x
       uses: actions/setup-dotnet@v1
@@ -32,8 +22,10 @@ jobs:
 
     - name: Build and Test
       run: dotnet  build Battleship
-    - name:  Test
+      
+    - name: Test
       run: dotnet  cake --target=Test --test-run-name=Windows --configuration=Release
+      
     - name: Package
       run: dotnet cake --target=Package
 
@@ -51,78 +43,7 @@ jobs:
       # Use always() to always run this step to publish test results when there are test failures
       if: ${{ always() }}
 
-  build-linux:
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v2
-
-    - name: Setup .NET Core SDK 3.1.x
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '3.1.x'
-
-    - name: Setup .NET Core SDK 5.0.x
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '5.0.x'
-
-    - name: Setup .NET Core SDK 6.0.x
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '6.0.x'
-
-    - name: Install F#
-      run: sudo apt-get install fsharp
-
-    - name: Install dotnet tools
-      run: dotnet tool restore
-
-    - name: Build and Test
-      run: dotnet cake --target=Test --test-run-name=Linux --configuration=Release
-
-    - name: Upload test results
-      uses: actions/upload-artifact@v2
-      with:
-        name: Test results (Linux)
-        path: test-results
-      # Use always() to always run this step to publish test results when there are test failures
-      if: ${{ always() }}
-
-  build-macos:
-    runs-on: macos-latest
-
-    steps:
-    - uses: actions/checkout@v2
-
-    - name: Setup .NET Core SDK 3.1.x
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '3.1.x'
-
-    - name: Setup .NET Core SDK 5.0.x
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '5.0.x'
-
-    - name: Setup .NET Core SDK 6.0.x
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '6.0.x'
-
-    - name: Install dotnet tools
-      run: dotnet tool restore
-
-    - name: Build and Test
-      run: dotnet cake --target=Test --test-run-name=Linux --configuration=Release
-
-    - name: Upload test results
-      uses: actions/upload-artifact@v2
-      with:
-        name: Test results (macOS)
-        path: test-results
-      # Use always() to always run this step to publish test results when there are test failures
-      if: ${{ always() }}
+ 
   build:
     name: Build
     runs-on: windows-latest
