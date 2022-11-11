@@ -31,8 +31,9 @@ jobs:
       run: dotnet tool restore
 
     - name: Build and Test
-      run: dotnet cake --target=Test --test-run-name=Windows --configuration=Release
-
+      run: dotnet  build Battleship
+    - name:  Test
+      run: dotnet  cake --target=Test --test-run-name=Windows --configuration=Release
     - name: Package
       run: dotnet cake --target=Package
 
